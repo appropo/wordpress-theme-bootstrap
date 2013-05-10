@@ -7,11 +7,11 @@
  *
  * Enqueue scripts in the following order:
  * 1. jquery-1.9.1.min.js via Google CDN
- * 2. /theme/scripts/js/vendor/modernizr-2.6.2.min.js
- * 3. /theme/scripts/js/main.js    (in footer)
+ * 2. /theme/scripts/vendor/modernizr-2.6.2.min.js
+ * 3. /theme/scripts/main.js    (in footer)
  * --------------------------------------------------------- */
 function roots_scripts() {
-  wp_enqueue_style('roots_app', get_template_directory_uri() . '/styles/css/app.css', false, null);
+  wp_enqueue_style('main_css', get_template_directory_uri() . '/styles/css/main.css', false, null);
 
   // jQuery is loaded using the same method from HTML5 Boilerplate:
   // Grab Google CDN's latest jQuery with a protocol relative URL; fallback to local if offline
@@ -26,11 +26,11 @@ function roots_scripts() {
     wp_enqueue_script('comment-reply');
   }
 
-  wp_register_script('modernizr', get_template_directory_uri() . '/scripts/js/vendor/modernizr-2.6.2.min.js', false, null, false);
-  wp_register_script('roots_main', get_template_directory_uri() . '/scripts/js/main.js', false, null, true);
+  wp_register_script('modernizr', get_template_directory_uri() . '/scripts/vendor/modernizr-2.6.2.min.js', false, null, false);
+  wp_register_script('main_js', get_template_directory_uri() . '/scripts/main.js', false, null, true);
   wp_enqueue_script('jquery');
   wp_enqueue_script('modernizr');
-  wp_enqueue_script('roots_main');
+  wp_enqueue_script('main_js');
 }
 add_action('wp_enqueue_scripts', 'roots_scripts', 100);
 
@@ -39,7 +39,7 @@ function roots_jquery_local_fallback($src, $handle) {
   static $add_jquery_fallback = false;
 
   if ($add_jquery_fallback) {
-    echo '<script>window.jQuery || document.write(\'<script src="' . get_template_directory_uri() . '/scripts/js/vendor/jquery-1.9.1.min.js"><\/script>\')</script>' . "\n";
+    echo '<script>window.jQuery || document.write(\'<script src="' . get_template_directory_uri() . '/scripts/vendor/jquery-1.9.1.min.js"><\/script>\')</script>' . "\n";
     $add_jquery_fallback = false;
   }
 
