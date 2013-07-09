@@ -19,7 +19,9 @@ function roots_head_cleanup() {
 
 	global $wp_widget_factory;
 	remove_action('wp_head', array($wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style'));
-}
+};
+
+add_action('init', 'roots_head_cleanup');
 
 /* ----------------------------------------------------------------
  * Wrap embedded media as suggested by Readability
@@ -29,7 +31,8 @@ function roots_head_cleanup() {
  * ---------------------------------------------------------------- */
 function roots_embed_wrap($cache, $url, $attr = '', $post_ID = '') {
 	return '<div class="entry-content-asset">' . $cache . '</div>';
-}
+};
+
 add_filter('embed_oembed_html', 'roots_embed_wrap', 10, 4);
 add_filter('embed_googlevideo', 'roots_embed_wrap', 10, 2);
 
@@ -70,7 +73,8 @@ function roots_caption($output, $attr, $content) {
 	$output .= '</figure>';
 
 	return $output;
-}
+};
+
 add_filter('img_caption_shortcode', 'roots_caption', 10, 3);
 
 
@@ -84,8 +88,26 @@ function roots_remove_dashboard_widgets() {
 	remove_meta_box('dashboard_plugins', 'dashboard', 'normal');
 	remove_meta_box('dashboard_primary', 'dashboard', 'normal');
 	remove_meta_box('dashboard_secondary', 'dashboard', 'normal');
-}
+};
+
 add_action('admin_init', 'roots_remove_dashboard_widgets');
+
+
+/* -----------------------------------------------------
+ * Remove some needless columns in admin list-view table
+ * ----------------------------------------------------- */
+function custom_column_filter( $columns ) {
+    unset($columns['comments']);
+    return $columns;
+};
+
+function remove_media_columns( $columns ) {
+    unset( $columns['comments'] );
+    return $columns;
+};
+
+add_filter( 'manage_edit-page_columns', 'custom_column_filter' );
+add_filter( 'manage_media_columns', 'remove_media_columns' );
 
 
 /* ----------------------
@@ -97,26 +119,21 @@ function roots_excerpt_length($length) {
 
 function roots_excerpt_more($more) {
 	return ' &hellip; <a href="' . get_permalink() . '">' . __('Continued', 'roots') . '</a>';
-}
+};
+
 add_filter('excerpt_length', 'roots_excerpt_length');
 add_filter('excerpt_more', 'roots_excerpt_more');
 
 
-/* ----------------------------------------------------------
- * Allow more tags in TinyMCE including <iframe> and <script>
- * ---------------------------------------------------------- */
-function roots_change_mce_options($options) {
-	$ext = 'pre[id|name|class|style],iframe[align|longdesc|name|width|height|frameborder|scrolling|marginheight|marginwidth|src],script[charset|defer|language|src|type]';
+/* -------------------------------
+ * Remove help tab on every screen
+ * ------------------------------- */
+function remove_help_tabs() {
+    $screen = get_current_screen();
+    $screen->remove_help_tabs();
+};
 
-	if (isset($initArray['extended_valid_elements'])) {
-		$options['extended_valid_elements'] .= ',' . $ext;
-	} else {
-		$options['extended_valid_elements'] = $ext;
-	}
-
-	return $options;
-}
-add_filter('tiny_mce_before_init', 'roots_change_mce_options');
+add_action('admin_head', 'remove_help_tabs');
 
 
 /* --------------------------------------------------------------------------------------------

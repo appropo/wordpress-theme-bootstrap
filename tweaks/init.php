@@ -4,11 +4,11 @@
  * --------------------------------- */
 function roots_setup() {
   // Make theme available for translation
-  load_theme_textdomain('roots', get_template_directory() . '/languages');
+  load_theme_textdomain('default', get_template_directory() . '/languages');
 
   // Register wp_nav_menu() menus (http://codex.wordpress.org/Function_Reference/register_nav_menus)
   register_nav_menus(array(
-    'primary_navigation' => __('Primary Navigation', 'roots'),
+    'primary_navigation' => __('Primary Navigation', 'default'),
   ));
 
   // Add post thumbnails (http://codex.wordpress.org/Post_Thumbnails)
