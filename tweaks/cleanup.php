@@ -88,6 +88,9 @@ function remove_dashboard_widgets() {
 	remove_meta_box('dashboard_plugins', 'dashboard', 'normal');
 	remove_meta_box('dashboard_primary', 'dashboard', 'normal');
 	remove_meta_box('dashboard_secondary', 'dashboard', 'normal');
+	remove_meta_box('dashboard_quick_press', 'dashboard', 'side');
+	remove_meta_box('dashboard_recent_drafts', 'dashboard', 'side');
+	remove_meta_box('dashboard_recent_comments', 'dashboard', 'normal');
 };
 
 add_action('admin_init', 'remove_dashboard_widgets');
