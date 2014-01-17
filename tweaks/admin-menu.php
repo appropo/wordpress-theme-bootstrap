@@ -9,7 +9,7 @@ function custom_admin_menu() {
 
 };
 
-add_action( 'admin_init', 'custom_admin_menu' );
+add_action( 'admin_menu', 'custom_admin_menu' );
 
 
 /* --------------------
